@@ -13,8 +13,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '7% 0 5% 0',
-    borderBottom: '1px solid black',
+    paddingTop: '7%',
+    paddingBottom: '5%',
   },
   title: {
     fontSize: '30px',
