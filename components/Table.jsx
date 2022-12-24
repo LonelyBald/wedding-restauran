@@ -1,16 +1,18 @@
 import { ModalTable } from './ModalTable';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const Table = ({ num }) => {
   const [modalTableActive, setModalTableActive] = useState(false);
-
-  const openModal = () => {
+  const openModal = ({ num, table }) => {
     setModalTableActive(true);
+    console.log('info');
   };
   return (
     <View style={styles.table}>
       <Text style={styles.titleTable}>Table №{num}</Text>
+      <Text></Text>
       <TouchableOpacity style={styles.addButton} onPress={openModal}>
         <Text style={styles.textButton}>Add new guest</Text>
       </TouchableOpacity>

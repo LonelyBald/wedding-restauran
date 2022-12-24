@@ -1,16 +1,20 @@
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { Table } from './Table';
+import { ModalTable } from './ModalTable';
 
 export const Home = () => {
   const [tableList, setTableList] = useState([]);
-  const [numTable, setNumTable] = useState(1);
+  const [numTable, setNumTable] = useState(0);
+  const [table, setTable] = useState({ num: 0, guest: [] });
 
   const addTableHandler = () => {
     const tableListCopy = [...tableList];
-    tableListCopy.push(<Table num={numTable} />);
+    table.num = numTable;
+    setNumTable((prev) => prev + 1);
+    tableListCopy.push(table);
     setTableList(tableListCopy);
-    setNumTable(numTable + 1);
+    console.log(tableList);
   };
 
   return (
@@ -19,7 +23,7 @@ export const Home = () => {
         <Text style={styles.add}>Add new table</Text>
       </TouchableOpacity>
       {tableList.map((table) => {
-        return <View>{table}</View>;
+        return <Table table={table} num={numTable} />;
       })}
     </View>
   );

@@ -13,15 +13,13 @@ import { useState } from 'react';
 export const ModalTable = ({ active, setActive }) => {
   const [nameInputValue, setNameInputValue] = useState('');
   const [ageInputValue, setAgeInputValue] = useState('');
-  const [storage] = useState([]);
-  const parseStorage = JSON.stringify(storage);
 
   const saveValue = async () => {
     if (nameInputValue && ageInputValue) {
-      await AsyncStorage.setItem(parseStorage, nameInputValue);
-      await AsyncStorage.setItem(parseStorage, ageInputValue);
+      await AsyncStorage.setItem('guestInfo', nameInputValue);
+      await AsyncStorage.setItem('guestInfo', ageInputValue);
       // AsyncStorage.setItem('key', JSON.stringify(chooseValue));
-      const items = AsyncStorage.getItem(JSON.parse(parseStorage));
+      const items = AsyncStorage.getItem(JSON.parse('guestInfo'));
       alert(items);
     } else {
       alert('pls fill data');
