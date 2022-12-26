@@ -1,30 +1,24 @@
-import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, View, StyleSheet, ScrollView } from 'react-native';
 import { useState } from 'react';
 import { Table } from './Table';
 import { ModalTable } from './ModalTable';
+import { useDispatch, useSelector } from 'react-redux';
+import { addTable } from '../redux';
 
 export const Home = () => {
-  const [tableList, setTableList] = useState([]);
-  const [numTable, setNumTable] = useState(0);
-  const [table, setTable] = useState({ num: 0, guest: [] });
-
-  const addTableHandler = () => {
-    const tableListCopy = [...tableList];
-    table.num = numTable;
-    setNumTable((prev) => prev + 1);
-    tableListCopy.push(table);
-    setTableList(tableListCopy);
-    console.log(tableList);
-  };
+  const tables = useSelector((state) => state.counter.tables);
+  const dispatch = useDispatch();
 
   return (
     <View style={styles.home}>
-      <TouchableOpacity style={styles.touch} onPress={addTableHandler}>
+      <TouchableOpacity style={styles.touch} onPress={() => dispatch(addTable())}>
         <Text style={styles.add}>Add new table</Text>
       </TouchableOpacity>
-      {tableList.map((table) => {
-        return <Table table={table} num={numTable} />;
-      })}
+      <View style={styles.content}>
+        <ScrollView>
+          {tables.map((table) => (table.id === 0 ? [] : <Table numTable={table.id} />))}
+        </ScrollView>
+      </View>
     </View>
   );
 };
@@ -54,5 +48,9 @@ const styles = StyleSheet.create({
   add: {
     color: 'white',
     fontSize: '20%',
+  },
+  content: {
+    width: '100%',
+    height: '90%',
   },
 });

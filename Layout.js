@@ -1,5 +1,5 @@
-import { Header } from './components/Header';
-import { Home } from './components/Home';
+import { Header } from './src/components/Header';
+import { Home } from './src/components/Home';
 import { View, StyleSheet } from 'react-native';
 
 export const Layout = () => {

@@ -7,20 +7,46 @@ import {
   Pressable,
   StyleSheet,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addHusbandGuest, addWifeGuest } from '../redux';
 
-export const ModalTable = ({ active, setActive }) => {
+export const ModalTable = ({ active, setActive, idTable }) => {
   const [nameInputValue, setNameInputValue] = useState('');
   const [ageInputValue, setAgeInputValue] = useState('');
 
-  const saveValue = async () => {
+  const dispatch = useDispatch();
+  const saveWifeGuest = () => {
     if (nameInputValue && ageInputValue) {
-      await AsyncStorage.setItem('guestInfo', nameInputValue);
-      await AsyncStorage.setItem('guestInfo', ageInputValue);
-      // AsyncStorage.setItem('key', JSON.stringify(chooseValue));
-      const items = AsyncStorage.getItem(JSON.parse('guestInfo'));
-      alert(items);
+      dispatch(
+        addWifeGuest({
+          id: idTable,
+          guest: {
+            name: nameInputValue,
+            age: ageInputValue,
+          },
+        })
+      );
+    } else {
+      alert('pls fill data');
+    }
+
+    setNameInputValue('');
+    setAgeInputValue('');
+    setActive(!active);
+  };
+
+  const saveHusbandGuest = () => {
+    if (nameInputValue && ageInputValue) {
+      dispatch(
+        addHusbandGuest({
+          id: idTable,
+          guest: {
+            name: nameInputValue,
+            age: ageInputValue,
+          },
+        })
+      );
     } else {
       alert('pls fill data');
     }
@@ -56,15 +82,12 @@ export const ModalTable = ({ active, setActive }) => {
               onChangeText={(data) => setAgeInputValue(data)}
             />
             <Text style={styles.chooseText}>Choose a side</Text>
-            <TouchableOpacity style={styles.chooseHusband}>
+            <TouchableOpacity onPress={saveHusbandGuest} style={styles.chooseHusband}>
               <Text style={styles.chooseText}>Husband</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.chooseWife}>
+            <TouchableOpacity onPress={saveWifeGuest} style={styles.chooseWife}>
               <Text style={styles.chooseText}>Wife</Text>
             </TouchableOpacity>
-            <Pressable onPress={saveValue} style={styles.press}>
-              <Text style={styles.text}>Add Guest</Text>
-            </Pressable>
           </View>
         </View>
       </Modal>
@@ -111,18 +134,8 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: 'center',
   },
-  press: {
-    display: 'flex',
-    justifyContent: 'center',
-    borderRadius: 20,
-    backgroundColor: 'black',
-    width: 200,
-    height: 50,
-    marginTop: '15%',
-    alignItems: 'center',
-  },
   chooseText: {
-    color: ' black',
+    color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
     fontSize: '20%',
