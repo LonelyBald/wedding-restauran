@@ -1,0 +1,25 @@
+{
+  "cli": {
+    "version": ">= 3.1.1"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "channel": "development"
+    },
+    "wedding-restaurant": {
+      "ios": {
+        "simulator": true
+      },
+      "distribution": "internal",
+      "channel": "wedding-restaurant"
+    },
+    "production": {
+      "channel": "production"
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

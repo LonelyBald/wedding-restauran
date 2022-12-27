@@ -2,6 +2,7 @@ import { Text, TouchableOpacity, View, StyleSheet, ScrollView } from 'react-nati
 import { Table } from './Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTable } from '../redux';
+import 'expo-dev-client';
 
 export const Home = () => {
   const tables = useSelector((state) => state.counter.tables);
