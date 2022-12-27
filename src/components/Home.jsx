@@ -1,7 +1,5 @@
 import { Text, TouchableOpacity, View, StyleSheet, ScrollView } from 'react-native';
-import { useState } from 'react';
 import { Table } from './Table';
-import { ModalTable } from './ModalTable';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTable } from '../redux';
 
@@ -9,14 +7,20 @@ export const Home = () => {
   const tables = useSelector((state) => state.counter.tables);
   const dispatch = useDispatch();
 
+  const addTableHandler = () => {
+    dispatch(addTable());
+  };
+
   return (
     <View style={styles.home}>
-      <TouchableOpacity style={styles.touch} onPress={() => dispatch(addTable())}>
+      <TouchableOpacity style={styles.touch} onPress={addTableHandler}>
         <Text style={styles.add}>Add new table</Text>
       </TouchableOpacity>
       <View style={styles.content}>
         <ScrollView>
-          {tables.map((table) => (table.id === 0 ? [] : <Table numTable={table.id} />))}
+          {tables.map((table, index) =>
+            table.id === 0 ? null : <Table key={index} numTable={table.id} />
+          )}
         </ScrollView>
       </View>
     </View>

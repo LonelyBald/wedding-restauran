@@ -28,18 +28,14 @@ export const tablesSlice = createSlice({
       const table = state.tables.find(({ id }) => id === action.payload.id);
       table.husbandGuests.push(action.payload.guest);
     },
-    deleteWifeGuest: (state, action) => {
+    deleteGuests: (state, action) => {
       const table = state.tables.find(({ id }) => id === action.payload.id);
-      table.wifeGuests.filter((guest) => action.payload.guest.name !== guest.name);
-    },
-    deleteHusbandGuest: (state, action) => {
-      const table = state.tables.find(({ id }) => id === action.payload.id);
-      table.husbandGuests.push((guest) => action.payload.guest.name !== guest.name);
+      table.husbandGuests = [];
+      table.wifeGuests = [];
     },
   },
 });
-export const { addTable, addHusbandGuest, addWifeGuest, deleteHusbandGuest, deleteWifeGuest } =
-  tablesSlice.actions;
+export const { addTable, addHusbandGuest, addWifeGuest, deleteGuests } = tablesSlice.actions;
 
 export const store = configureStore({
   reducer: {

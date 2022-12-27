@@ -1,14 +1,6 @@
-import {
-  Modal,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  Pressable,
-  StyleSheet,
-} from 'react-native';
+import { Modal, Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addHusbandGuest, addWifeGuest } from '../redux';
 
 export const ModalTable = ({ active, setActive, idTable }) => {
@@ -81,7 +73,7 @@ export const ModalTable = ({ active, setActive, idTable }) => {
               value={ageInputValue}
               onChangeText={(data) => setAgeInputValue(data)}
             />
-            <Text style={styles.chooseText}>Choose a side</Text>
+            <Text style={styles.text}>Choose a side</Text>
             <TouchableOpacity onPress={saveHusbandGuest} style={styles.chooseHusband}>
               <Text style={styles.chooseText}>Husband</Text>
             </TouchableOpacity>
@@ -141,7 +133,7 @@ const styles = StyleSheet.create({
     fontSize: '20%',
   },
   text: {
-    color: 'white',
+    color: 'black',
     fontWeight: 'bold',
     textAlign: 'center',
     fontSize: '20%',

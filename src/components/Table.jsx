@@ -1,21 +1,36 @@
 import { ModalTable } from './ModalTable';
-import { useEffect, useState } from 'react';
-import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState } from 'react';
+import { Text, TouchableOpacity, View, StyleSheet, Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteHusbandGuest } from '../redux';
+import { deleteGuests } from '../redux';
 
 export const Table = ({ numTable }) => {
   const [modalTableActive, setModalTableActive] = useState(false);
   const tables = useSelector((state) => state.counter.tables);
+  const currentTable = tables.find(({ id }) => id === numTable);
   const dispatch = useDispatch();
-
-  const deleteHusGuest = () => {
-    dispatch(deleteHusbandGuest({ id: numTable, name: name }));
-  };
-
   const openModal = () => {
     setModalTableActive(true);
+  };
+
+  const DELETE_GUESTS_MESSAGE = 'Do you want to remove all guests?';
+  const clearGuests = () => {
+    Alert.alert('Delete guests', DELETE_GUESTS_MESSAGE, [
+      {
+        text: 'Yes',
+        onPress: () => {
+          dispatch(deleteGuests({ id: numTable }));
+        },
+      },
+      {
+        text: 'No',
+        onPress: () => {
+          return null;
+        },
+      },
+    ]);
+    {
+    }
   };
 
   return (
@@ -26,33 +41,25 @@ export const Table = ({ numTable }) => {
           <Text style={styles.textButton}>Add new guest</Text>
         </TouchableOpacity>
       </View>
-      {tables.map((table) =>
-        table.wifeGuests
-          ? table.wifeGuests.map(({ name, age }) => {
-              return (
-                <View style={styles.guestWife}>
-                  <Text>{name}, </Text>
-                  <Text>{age}</Text>
-                </View>
-              );
-            })
-          : null
-      )}
-      {tables.map((table) =>
-        table.husbandGuests
-          ? table.husbandGuests.map(({ name, age }) => {
-              return (
-                <View style={styles.guestHusband}>
-                  <Text>{name}, </Text>
-                  <Text>{age}</Text>
-                  <TouchableOpacity onPress={deleteHusGuest}>
-                    <Text>Delete</Text>
-                  </TouchableOpacity>
-                </View>
-              );
-            })
-          : null
-      )}
+      <TouchableOpacity style={styles.deleteGuests} onPress={clearGuests}>
+        <Text style={styles.textButton}>Delete Guests</Text>
+      </TouchableOpacity>
+      {currentTable.wifeGuests.map(({ name, age }) => {
+        return name && age ? (
+          <View style={styles.guestWifeContainer} key={name + age}>
+            <Text style={styles.guestText}>{name}, </Text>
+            <Text style={styles.guestText}>{age}</Text>
+          </View>
+        ) : null;
+      })}
+      {currentTable.husbandGuests.map(({ name, age }) => {
+        return (
+          <View style={styles.guestHusbandContainer}>
+            <Text style={styles.guestText}>{name}, </Text>
+            <Text style={styles.guestText}>{age}</Text>
+          </View>
+        );
+      })}
       <ModalTable active={modalTableActive} setActive={setModalTableActive} idTable={numTable} />
     </View>
   );
@@ -91,8 +98,9 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: '20%',
     padding: '2%',
+    fontWeight: 'bold',
   },
-  guestWife: {
+  guestWifeContainer: {
     display: 'flex',
     flexDirection: 'row',
     minWidth: '10%',
@@ -103,7 +111,7 @@ const styles = StyleSheet.create({
     borderRadius: '2px',
     borderColor: '#5a2a6b',
   },
-  guestHusband: {
+  guestHusbandContainer: {
     display: 'flex',
     flexDirection: 'row',
     padding: 4,
@@ -112,5 +120,19 @@ const styles = StyleSheet.create({
     borderWidth: '6px',
     borderRadius: '2px',
     borderColor: '#315d28',
+  },
+  guestText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  deleteGuests: {
+    position: 'fixed',
+    width: ' 60%',
+    height: 30,
+    marginLeft: 122,
+    backgroundColor: '#711515',
+    margin: '2%',
+    borderRadius: 8,
+    alignItems: 'center',
   },
 });
